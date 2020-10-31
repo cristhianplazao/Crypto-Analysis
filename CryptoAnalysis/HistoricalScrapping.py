@@ -5,10 +5,18 @@ import sys
 import datetime as dt
 import influxdb
 import time
+import datup
 
 def historical():
     date_ = dt.datetime.now()
     fecha = date_.strftime("%Y%m%d")
+
+    ins = dt.Datup(
+        "AKIAJRKTJCOQZJ36YWFA",
+        "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+        "coincrypto-datalake",
+        suffix_name="historical_data_"
+    )
 
     r = requests.get(f"https://coinmarketcap.com")
     soup = BeautifulSoup(r.text, "html.parser")
@@ -103,7 +111,8 @@ def historical():
                     df_market_temp = df_market_temp.set_index("date").to_period("s")
                     df_market = pd.concat([df_market,df_market_temp],axis=1)
 
-                    print(f"{symbol} added correctly")
+                    #print(f"{symbol} added correctly")
+                    ins.logger.debug(f"{symbol} added correctly\n")
                     
                     break
 
@@ -128,7 +137,8 @@ def historical():
                     else:
                         time.sleep(2)
                         trying_soup = trying_soup + 1
-                        print(f"{symbol} added soup try number {trying_soup}")
+                        #print(f"{symbol} added soup try number {trying_soup}")
+                        ins.logger.debug(f"{symbol} added soup try number {trying_soup}\n")
             else:
                 if trying_uris == 5:
                     uris_failed.append(uri)
@@ -136,7 +146,8 @@ def historical():
                 else:                
                     time.sleep(2)
                     trying_uris = trying_uris + 1
-                    print(f"{symbol} added soup try number {trying_uris}")
+                    ins.logger.debug(f"{symbol} added uri try number {trying_uris}\n")
+                    #print(f"{symbol} added soup try number {trying_uris}")
 
     client.write_points(df_open, "open", protocol=protocol)
     client.write_points(df_close, "close", protocol=protocol)
@@ -144,6 +155,7 @@ def historical():
     client.write_points(df_min, "min", protocol=protocol)
     client.write_points(df_vol, "volume", protocol=protocol)
     client.write_points(df_market, "market", protocol=protocol)
+    datup.upload_log(ins,logfile=ins.log_filename,stage='output/logs')
 
 if __name__ == "__main__":
     historical()
