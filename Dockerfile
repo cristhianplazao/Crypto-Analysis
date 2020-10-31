@@ -1,6 +1,6 @@
 FROM python:3.8
 
-RUN pip install datetime requests influxdb pandas bs4
+RUN pip install datetime requests influxdb pandas bs4 datup
 
 COPY CryptoAnalysis/HistoricalScrapping.py /opt/ml/code/CryptoAnalysis/HistoricalScrapping.py
 

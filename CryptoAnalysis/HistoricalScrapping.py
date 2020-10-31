@@ -11,7 +11,7 @@ def historical():
     date_ = dt.datetime.now()
     fecha = date_.strftime("%Y%m%d")
 
-    ins = dt.Datup(
+    ins = datup.Datup(
         "AKIAJRKTJCOQZJ36YWFA",
         "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
         "coincrypto-datalake",
