@@ -143,7 +143,7 @@ def historical():
     client.write_points(df_max, "max", protocol=protocol)
     client.write_points(df_min, "min", protocol=protocol)
     client.write_points(df_vol, "volume", protocol=protocol)
-    client.write_points(df_vol, "market", protocol=protocol)
+    client.write_points(df_market, "market", protocol=protocol)
 
 if __name__ == "__main__":
     historical()
