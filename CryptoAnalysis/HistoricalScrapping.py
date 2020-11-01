@@ -32,7 +32,7 @@ def historical():
         except AttributeError as error:
             pass
 
-    client = influxdb.DataFrameClient(host="52.27.24.79", port=8086, username='admin', password='TaroCristhian71780')
+    client = influxdb.DataFrameClient(host="35.167.69.25", port=8086, username='admin', password='TaroCristhian71780')
     client.switch_database('daily')
     protocol = 'line'
 
