@@ -135,7 +135,7 @@ def historical():
                         soup_failed.append(uri)
                         break
                     else:
-                        time.sleep(2)
+                        time.sleep(5)
                         trying_soup = trying_soup + 1
                         print(f"{symbol} added soup try number {trying_soup}")
                         ins.logger.debug(f"{symbol} added soup try number {trying_soup}\n")
@@ -144,7 +144,7 @@ def historical():
                     uris_failed.append(uri)
                     break
                 else:                
-                    time.sleep(2)
+                    time.sleep(5)
                     trying_uris = trying_uris + 1
                     ins.logger.debug(f"{symbol} added uri try number {trying_uris}\n")
                     print(f"{symbol} added soup try number {trying_uris}")
