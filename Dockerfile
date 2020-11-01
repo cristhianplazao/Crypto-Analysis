@@ -4,4 +4,4 @@ RUN pip install datetime requests influxdb pandas bs4 datup joblib matplotlib sc
 
 COPY CryptoAnalysis/HistoricalScrapping.py /opt/ml/code/CryptoAnalysis/HistoricalScrapping.py
 
-RUN python3 /opt/ml/code/CryptoAnalysis/HistoricalScrapping.py
+ENTRYPOINT ["python3", "/opt/ml/code/CryptoAnalysis/HistoricalScrapping.py"]
