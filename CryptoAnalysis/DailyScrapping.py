@@ -44,7 +44,10 @@ def regularexpressions_daily():
                 second = re.findall(r'</script><script nomodule.+', str(first[0]))
                 json_file = json.loads(str(first[0]).replace(second[0],""))
                 key=list(json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"].keys())
-                quotes = json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"][key[0]]["quotes"][-2:]
+                try:
+                    quotes = json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"][key[0]]["quotes"][-2:]
+                except:
+                    break
                 dates = [timestamp["quote"]["USD"]["timestamp"] for timestamp in quotes]
                 open_values = [open_val["quote"]["USD"]["open"] for open_val in quotes]
                 close_values = [close_val["quote"]["USD"]["close"] for close_val in quotes]
@@ -109,6 +112,8 @@ def regularexpressions_daily():
                     trying_uris = trying_uris + 1
                     ins.logger.debug(f"{symbol} added uri try number {trying_uris}\n")
                     print(f"{symbol} added uri try number {trying_uris}")
+
+        time.sleep(5)
 
     client.write_points(df_open.astype("float"), "open", protocol=protocol)
     client.write_points(df_close.astype("float"), "close", protocol=protocol)

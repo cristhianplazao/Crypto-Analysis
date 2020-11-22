@@ -122,6 +122,9 @@ def causality():
             continue
         
     df = pd.DataFrame.from_dict(main_list)
+    df_download["index"] = df_download.index
+    df = pd.merge(df_download[["symbols","index"]], df, left_on="symbols", right_on="crypto")
+    df = df.sort_values(by="index", ascending=True)
     upload_json(df, "coincrypto-datalake",f"web/{fecha}/",f"{fecha}.json")
     dt.upload_log(ins,logfile=ins.log_filename,stage='output/logs')
 

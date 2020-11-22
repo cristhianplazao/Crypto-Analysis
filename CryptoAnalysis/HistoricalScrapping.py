@@ -21,7 +21,7 @@ ins = datup.Datup(
 
 df_download = datup.download_csv(ins,"as-is/cryptos", "cryptos")
 
-client = influxdb.DataFrameClient(host="54.203.19.65", port=8086, username='admin', password='TaroCristhian71780')
+client = influxdb.DataFrameClient(host="54.68.87.127", port=8086, username='admin', password='TaroCristhian71780')
 client.switch_database('daily')
 protocol = 'line'
 
@@ -127,6 +127,12 @@ def nativesoup_historical():
                     ins.logger.debug(f"{symbol} added uri try number {trying_uris}\n")
                     print(f"{symbol} added soup try number {trying_uris}")
 
+    client.query("drop measurement open")
+    client.query("drop measurement close")
+    client.query("drop measurement max")
+    client.query("drop measurement min")
+    client.query("drop measurement volume")
+    client.query("drop measurement market")
     client.write_points(df_open, "open", protocol=protocol)
     client.write_points(df_close, "close", protocol=protocol)
     client.write_points(df_max, "max", protocol=protocol)
@@ -158,7 +164,10 @@ def regularexpressions_historical():
                 second = re.findall(r'</script><script nomodule.+', str(first[0]))
                 json_file = json.loads(str(first[0]).replace(second[0],""))
                 key=list(json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"].keys())
-                quotes = json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"][key[0]]["quotes"]
+                try:
+                    quotes = json_file["props"]["initialState"]["cryptocurrency"]["ohlcvHistorical"][key[0]]["quotes"]
+                except:
+                    break
                 dates = [timestamp["quote"]["USD"]["timestamp"] for timestamp in quotes]
                 open_values = [open_val["quote"]["USD"]["open"] for open_val in quotes]
                 close_values = [close_val["quote"]["USD"]["close"] for close_val in quotes]
@@ -223,7 +232,14 @@ def regularexpressions_historical():
                     trying_uris = trying_uris + 1
                     ins.logger.debug(f"{symbol} added uri try number {trying_uris}\n")
                     print(f"{symbol} added uri try number {trying_uris}")
+        time.sleep(5)
 
+    client.query("drop measurement open")
+    client.query("drop measurement close")
+    client.query("drop measurement max")
+    client.query("drop measurement min")
+    client.query("drop measurement volume")
+    client.query("drop measurement market")
     client.write_points(df_open.astype("float"), "open", protocol=protocol)
     client.write_points(df_close.astype("float"), "close", protocol=protocol)
     client.write_points(df_max.astype("float"), "max", protocol=protocol)
