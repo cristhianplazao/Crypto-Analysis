@@ -11,8 +11,8 @@ def predict(FREQ, H_STEPS, T_SEASONS, LAGS):
     )
 
     ins = dt.Datup(
-        "AKIAJRKTJCOQZJ36YWFA",
-        "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+        "...",
+        "...",
         "coincrypto-datalake",
         suffix_name="predict_cryptos_"+str(es.H_STEPS)+"_"
     )

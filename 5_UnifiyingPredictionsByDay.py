@@ -11,8 +11,8 @@ def unifying(FREQ, H_STEPS, T_SEASONS, LAGS):
     )
 
     ins = dt.Datup(
-        "AKIAJRKTJCOQZJ36YWFA",
-        "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+        "...",
+        "...",
         "coincrypto-datalake",
         suffix_name="unifying_cryptos_"+str(es.H_STEPS)+"_"
     )
@@ -39,8 +39,8 @@ def unifying(FREQ, H_STEPS, T_SEASONS, LAGS):
 
 def persistent():
     ins = dt.Datup(
-        "AKIAJRKTJCOQZJ36YWFA",
-        "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+        "...",
+        "...",
         "coincrypto-datalake",
         suffix_name="persistent_cryptos_"
     )

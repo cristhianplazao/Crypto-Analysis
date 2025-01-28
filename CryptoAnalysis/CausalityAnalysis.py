@@ -4,6 +4,8 @@ import datup as dt
 import datetime
 import boto3
 import matplotlib.pyplot as plt
+from decimal import Decimal
+from datetime import timedelta
 
 s3 = boto3.resource('s3', aws_access_key_id='AKIAJRKTJCOQZJ36YWFA', aws_secret_access_key='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')
 
@@ -40,7 +42,7 @@ ins = dt.Datup(
 )
 
 def causality():
-    client = influxdb.DataFrameClient(host="54.68.87.127", port=8086, username='admin', password='TaroCristhian71780')
+    client = influxdb.DataFrameClient(host="34.216.96.184", port=8086, username='admin', password='TaroCristhian71780')
     client.switch_database('daily')
     query = client.query("SELECT * FROM close order by time desc limit 90",database="daily")
     df = query["close"].fillna(0).sort_index(ascending=False)
@@ -54,7 +56,9 @@ def causality():
         return corr
 
     date_ = datetime.datetime.now()
-    fecha = date_.strftime("%Y-%m-%d")
+    tomorrow = date_ + timedelta(days=1)
+    fecha = tomorrow.strftime("%Y-%m-%d")
+    #fecha = date_.strftime("%Y-%m-%d")
 
     df_download = dt.download_csv(ins,"as-is/cryptos", "cryptos")
 
@@ -64,9 +68,9 @@ def causality():
     for column in df.columns:
         dict_ = dict()
         dict_["crypto"] = f"{column}"
-        dict_["last_close_price"] = df[column][0]
+        dict_["last_close_price"] = Decimal(str(df[column][0]))
         dict_["24h_pchange"] = df[column][:2].pct_change(fill_method="ffill")[1]
-        data_15 = df[column][:15].tolist()
+        data_15 = df[column][:15].sort_values(ascending=True).tolist()
         dict_["15_days_data"] = data_15
         upload_image_plotlib(data_15, "coincrypto-images", f"images/daily/{fecha}/", f"{column}.png")
         dict_["uri_15_graph"] = f"https://coincrypto-images.s3.amazonaws.com/images/daily/{fecha}/{column}.png"
@@ -88,7 +92,7 @@ def causality():
                         causality_name = causality.replace("_y","")                
                         temp_dict = dict()
                         temp_dict["crypto"] = causality_name
-                        temp_dict["value"] = value
+                        #temp_dict["value"] = value
                         df_downloaded_temp_intern = df_download.loc[df_download["symbols"]==f"{causality_name}"]
                         if len(df_downloaded_temp_intern) > 0:
                             key_temp_intern = df_downloaded_temp_intern.index[0]
@@ -108,7 +112,7 @@ def causality():
                     for i in range(0,10):
                         temp_dict = dict()
                         temp_dict["crypto"] = "NO DATA"
-                        temp_dict["value"] = "NO DATA"
+                        #temp_dict["value"] = "NO DATA"
                         correlated.append(temp_dict)
                     temp_day["correlated_with"] = correlated
                     days_list.append(temp_day)
@@ -130,4 +134,3 @@ def causality():
 
 if __name__ == "__main__":
     causality()
-    

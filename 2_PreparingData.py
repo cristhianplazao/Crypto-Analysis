@@ -3,8 +3,8 @@ import pandas as pd
 import sys
 
 ins = dt.Datup(
-    "AKIAJRKTJCOQZJ36YWFA",
-    "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+    "...",
+    "...",
     "coincrypto-datalake",
     suffix_name="preparing_data_"
 )

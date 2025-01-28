@@ -21,7 +21,7 @@ ins = datup.Datup(
 
 df_download = datup.download_csv(ins,"as-is/cryptos", "cryptos")
 
-client = influxdb.DataFrameClient(host="54.68.87.127", port=8086, username='admin', password='TaroCristhian71780')
+client = influxdb.DataFrameClient(host="52.38.135.113", port=8086, username='admin', password='TaroCristhian71780')
 client.switch_database('daily')
 protocol = 'line'
 

@@ -17,6 +17,15 @@ def upload_image(image, bucket, key, filename):
         raise    
     return ("s3://{}/{}{}".format(bucket, key, filename))
 
+def upload_json(dataframe, bucket, io_json_key, out_json):
+    try:
+        dataframe.to_json('/tmp/' + out_json, orient='records', force_ascii=False)
+        s3.Bucket(bucket).upload_file('/tmp/' + out_json, io_json_key + out_json)
+    except FileNotFoundError as error:
+        print(error)
+        raise    
+    return ("s3://{}/{}{}".format(bucket, io_json_key, out_json))
+
 ins = datup.Datup(
     "AKIAJRKTJCOQZJ36YWFA",
     "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
@@ -37,7 +46,6 @@ def gettingcryptosinfo():
     df_download = datup.download_csv(ins,"as-is/cryptos", "cryptos")
     list_symbols = df_download["symbols"].tolist()
     list_images = df_download["uri_images_s3"].tolist()
-
     for tr in tr_list:
         try:
             exists = False      
@@ -102,8 +110,10 @@ def gettingcryptosinfo():
             "uri_web":uris_web
         })
         df = pd.concat([df_download,df_news], 0)
-        s3_cryptos = datup.upload_csv(ins, df, "as-is", "cryptos")
-        ins.logger.debug(f"process finished and saved in {s3_cryptos}")
+        s3_cryptos_csv = datup.upload_csv(ins, df, "as-is", "cryptos")
+        s3_cryptos_json = upload_json(df,"coincrypto-datalake","as-is","cryptos.json")
+        ins.logger.debug(f"process finished and saved in {s3_cryptos_csv}")
+        ins.logger.debug(f"process finished and saved in {s3_cryptos_json}")
     else:
         ins.logger.debug(f"process finished nothing to save")
     datup.upload_log(ins,logfile=ins.log_filename,stage='output/logs')

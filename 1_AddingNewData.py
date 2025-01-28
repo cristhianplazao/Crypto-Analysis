@@ -5,8 +5,8 @@ import requests
 import sys
 
 ins = dt.Datup(
-    "AKIAJRKTJCOQZJ36YWFA",
-    "x0HDqGg6nrGlpLYM4k3jRsd7pLOYp216jD8s1pUn",
+    "...",
+    "...",
     "coincrypto-datalake",
     suffix_name="adding_new_data_"
 )

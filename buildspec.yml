@@ -8,7 +8,7 @@ phases:
       - echo $IMAGE_TAG
       - echo $IMAGE_REPO
       - docker build -f Dockerfile -t 'crypto-analysis:last' .
-      - docker tag 'crypto-analysis:last' '234813130437.dkr.ecr.us-west-2.amazonaws.com/crypto-analysis:last'
+      - docker tag 'crypto-analysis:last' '....dkr.ecr.us-west-2.amazonaws.com/crypto-analysis:last'
   install:
     runtime-versions:
       docker: 18
@@ -16,7 +16,7 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push '234813130437.dkr.ecr.us-west-2.amazonaws.com/crypto-analysis:last'
+      - docker push '....dkr.ecr.us-west-2.amazonaws.com/crypto-analysis:last'
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
